@@ -5,6 +5,8 @@ from app.forms import LoginForm
 bp = Blueprint('main',__name__)
 
 
+
+
 # 2个路由
 @bp.route('/')
 # 1个试图函数

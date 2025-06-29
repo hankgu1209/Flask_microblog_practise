@@ -1,12 +1,20 @@
+import pymysql
+pymysql.install_as_MySQLdb()
+
+
 #从flask包中导入Flask类
 from flask import Flask
 from config import Config
 from dotenv import load_dotenv
-from app.routes import bp
-
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 import os
 
 
+
+# 初始化扩展（不传 app）
+db = SQLAlchemy()
+migrate = Migrate()
 
 
 # 自动加载 .env 文件
@@ -17,8 +25,16 @@ def create_app():
     app = Flask(__name__)#将Flask类的实例 赋值给名为 app 的变量。这个实例成为app包的成员。
     app.config.from_object(Config)
 
-    app.register_blueprint(bp)
+    db.init_app(app)
+    migrate.init_app(app, db)
+    from app.routes import bp
 
+    app.register_blueprint(bp)
+    from app import models
+    from app.models import User,Post
+    @app.shell_context_processor
+    def make_shell_context():
+        return dict(db=db, User=User, Post=Post)
     # for rule in app.url_map.iter_rules():
     #     print(rule)
 
