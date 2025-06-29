@@ -1,8 +1,20 @@
 from app import app # 从app包中导入 app 实例
+from flask import Flask, render_template
 
 # 2个路由
 @app.route('/')
 @app.route('/index')
 # 1个试图函数
 def index():
-    return "Hello, World!" # 返回一个字符串
+    user = {'username':'George'} # 用户
+    posts = [  # 创建一个列表：帖子。里面元素是两个字典，每个字典里元素还是字典，分别作者、帖子内容。
+        {
+            'author': {'username': 'John'},
+            'body': 'Beautiful day in Portland!'
+        },
+    {
+        'author': {'username': 'Susan'},
+        'body': 'The Avengers movie was so cool!'
+    }
+    ]
+    return render_template('index.html',  user=user,posts=posts)
