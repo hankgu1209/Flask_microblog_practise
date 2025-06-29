@@ -1,9 +1,12 @@
-from app import app # 从app包中导入 app 实例
-from flask import Flask, render_template
+# from app import app # 从app包中导入 app 实例
+from flask import Flask, render_template,Blueprint
+from app.forms import LoginForm
+
+bp = Blueprint('main',__name__)
+
 
 # 2个路由
-@app.route('/')
-@app.route('/index')
+@bp.route('/')
 # 1个试图函数
 def index():
     user = {'username':'George'} # 用户
@@ -18,3 +21,9 @@ def index():
     }
     ]
     return render_template('index.html',  user=user,posts=posts)
+
+@bp.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    return render_template('login.html', title='Sign In', form=form)
+
