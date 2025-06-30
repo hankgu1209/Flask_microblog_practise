@@ -35,7 +35,7 @@ def create_app():
     from app.routes import bp
     app.register_blueprint(bp)
 
-    from app import models
+    from app import models,routes,errors
     from app.models import User,Post
     @app.shell_context_processor
     def make_shell_context():
