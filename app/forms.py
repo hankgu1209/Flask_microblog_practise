@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm # 从flask_wtf 包中导入FlaskForm类
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from wtforms import StringField, PasswordField, BooleanField, SubmitField,TelField
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo,Length
 from app.models import User
 from wtforms import ValidationError
 
@@ -27,3 +27,8 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError('Please use a different email address.')
+
+class EditProfileForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    about_me = StringField('About me', validators=[Length(min=0, max=140)])
+    submit = SubmitField('Submit')
